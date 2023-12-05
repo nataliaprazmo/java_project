@@ -18,11 +18,13 @@ public interface AppointmentService {
 
     public boolean existsOnDate(Date date);
 
-    public AppointmentEntity save(AppointmentEntity appointment);
+    public boolean isBeforeToday(AppointmentEntity appointment);
+
+    public boolean save(AppointmentEntity appointment);
 
     public boolean deleteById(Long id);
 
     public boolean update(Long id, AppointmentEntity appointment);
 
-    public AppointmentEntity updateStatus(Long id);
+    public boolean updateStatus(Long id);
 }

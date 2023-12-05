@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.validation.Valid;
+
 @RestController
 @RequestMapping("/api/auth")
 public class AuthRestController {
@@ -28,7 +30,7 @@ public class AuthRestController {
     }
 
     @PostMapping("/signup")
-    public ResponseEntity<UserEntity> signup(@RequestBody UserEntity user) {
+    public ResponseEntity<UserEntity> signup(@Valid @RequestBody UserEntity user) {
         if (userService.exists(user.getEmail()) || userService.existsPhone(user.getPhone()))
             return new ResponseEntity<>(HttpStatus.CONFLICT);
         UserEntity saved = userService.save(user);
