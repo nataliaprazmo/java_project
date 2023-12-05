@@ -1,5 +1,6 @@
 package com.vetappointmentsystem.vas.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -17,6 +18,11 @@ public class AppointmentEntity {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
+    @JsonIgnore
+    @ManyToOne
+    @JoinColumn(name = "appointmentUser_id")
+    private UserEntity appointmentUser;
+
     @Enumerated(EnumType.STRING)
     @Column(columnDefinition = "varchar(255) default 'RESERVED'")
     private AppointmentStatusEnum status;
@@ -27,4 +33,10 @@ public class AppointmentEntity {
     private String details;
 
     private String petName;
+
+    public AppointmentEntity(Date date, String details, String petName) {
+        this.date = date;
+        this.details = details;
+        this.petName = petName;
+    }
 }
