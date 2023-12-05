@@ -48,9 +48,17 @@ public class AppointmentServiceImpl implements AppointmentService {
     }
 
     @Override
-    public AppointmentEntity save(AppointmentEntity appointment) {
+    public boolean isBeforeToday(AppointmentEntity appointment) {
+        Date currentDate = new Date();
+        return appointment.getDate().before(currentDate);
+    }
+
+    @Override
+    public boolean save(AppointmentEntity appointment) {
         appointment.setStatus(AppointmentStatusEnum.RESERVED);
-        return appointmentRepository.save(appointment);
+        if (isBeforeToday(appointment) || existsOnDate(appointment.getDate())) return false;
+        appointmentRepository.save(appointment);
+        return true;
     }
 
     @Override
@@ -65,6 +73,8 @@ public class AppointmentServiceImpl implements AppointmentService {
         AppointmentEntity appointmentEntity = getAppointmentById(id);
         if (appointmentEntity == null)
             return false;
+        if (isBeforeToday(appointment) || appointment.getStatus() == AppointmentStatusEnum.COMPLETED)
+            return false;
         appointmentEntity.setDate(appointment.getDate());
         appointmentEntity.setDetails(appointment.getDetails());
         appointmentEntity.setPetName(appointment.getPetName());
@@ -73,9 +83,12 @@ public class AppointmentServiceImpl implements AppointmentService {
     }
 
     @Override
-    public AppointmentEntity updateStatus(Long id) {
+    public boolean updateStatus(Long id) {
         AppointmentEntity appointment = getAppointmentById(id);
+        if (!isBeforeToday(appointment) || appointment.getStatus() == AppointmentStatusEnum.COMPLETED)
+            return false;
         appointment.setStatus(AppointmentStatusEnum.COMPLETED);
-        return appointmentRepository.save(appointment);
+        appointmentRepository.save(appointment);
+        return true;
     }
 }
