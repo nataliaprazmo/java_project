@@ -14,7 +14,13 @@ public interface UserService {
 
     public boolean existsPhone(String phone);
 
+    public boolean existsAnyAdmin();
+
     public List<UserEntity> getUsersByRole(UserRoleEnum role);
 
     public UserEntity save(UserEntity user);
+
+    public boolean saveAdmin(UserEntity admin);
+
+    public boolean deleteAdminById(Long id);
 }
