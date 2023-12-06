@@ -29,7 +29,8 @@ public class AppointmentServiceImpl implements AppointmentService {
 
     @Override
     public AppointmentEntity getAppointmentById(Long id) {
-        return appointmentRepository.findById(id).orElseThrow(() -> new NoSuchElementException("Appointment with id " + id + " not found"));
+        return appointmentRepository.findById(id)
+                .orElseThrow(() -> new NoSuchElementException("Appointment with id " + id + " not found"));
     }
 
     @Override

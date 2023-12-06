@@ -37,7 +37,8 @@ public class AuthServiceImpl implements AuthService {
     public JwtAuthDTO login(LoginDTO loginDTO) {
         authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(loginDTO.getEmail(),
                 loginDTO.getPassword()));
-        var user = userRepository.findByEmail(loginDTO.getEmail()).orElseThrow(() -> new BadCredentialsException("Invalid email or password"));
+        var user = userRepository.findByEmail(loginDTO.getEmail())
+                .orElseThrow(() -> new BadCredentialsException("Invalid email or password"));
         var userDetails = userAuthDetailsService.loadUserByUsername(user.getEmail());
         var jwt = jwtService.generateToken(userDetails);
         JwtAuthDTO jwtAuthDTO = new JwtAuthDTO();
@@ -49,7 +50,8 @@ public class AuthServiceImpl implements AuthService {
     public UserEntity retrieveUser(String headerToken) {
         String token = headerToken.substring(7);
         String userEmail = jwtService.extractUsername(token);
-        UserEntity user = userRepository.findByEmail(userEmail).orElseThrow(() -> new UsernameNotFoundException("User with email " + userEmail + " not found"));
+        UserEntity user = userRepository.findByEmail(userEmail)
+                .orElseThrow(() -> new UsernameNotFoundException("User with email " + userEmail + " not found"));
         return user;
     }
 }
