@@ -14,6 +14,9 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.HashMap;
+import java.util.Map;
+
 @Service
 @Transactional
 public class AuthServiceImpl implements AuthService {
@@ -43,6 +46,7 @@ public class AuthServiceImpl implements AuthService {
         var jwt = jwtService.generateToken(userDetails);
         JwtAuthDTO jwtAuthDTO = new JwtAuthDTO();
         jwtAuthDTO.setToken(jwt);
+        jwtAuthDTO.setRole(user.getRole().name());
         return jwtAuthDTO;
     }
 

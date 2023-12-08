@@ -21,9 +21,11 @@ public class VasApplication implements CommandLineRunner {
     }
 
     public void run(String... args) {
+        userService.save(new UserEntity("Adam", "Nowak", "nowak@mail.com", "P@ssw0rd", "111111111"));
+        System.out.println("user created");
         if (!userService.existsAnyAdmin()) {
             userService.saveAdmin(new UserEntity("Admin", "Adminski", "admin@admin.com", "P@ssw0rd", "000000000"));
-            System.out.println("utworzono admina");
+            System.out.println("admin created");
         }
     }
 
