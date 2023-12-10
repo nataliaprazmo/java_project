@@ -79,7 +79,7 @@ public class AppointmentServiceImpl implements AppointmentService {
         appointmentEntity.setDate(appointment.getDate());
         appointmentEntity.setDetails(appointment.getDetails());
         appointmentEntity.setPetName(appointment.getPetName());
-        appointmentRepository.save(appointment);
+        appointmentRepository.save(appointmentEntity);
         return true;
     }
 

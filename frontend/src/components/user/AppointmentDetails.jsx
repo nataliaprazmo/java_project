@@ -21,7 +21,7 @@ const AppointmentDetails = () => {
 		const sendData = {
 			...data,
 			details: newDetail + details,
-			date: dateTimeString + ":00",
+			date: new Date(dateTimeString),
 		};
 		try {
 			const response = await fetch(
@@ -35,7 +35,6 @@ const AppointmentDetails = () => {
 					body: JSON.stringify({ ...sendData }),
 				}
 			);
-			console.log(response);
 			if (response.status === 200) {
 				setError(null);
 				window.location = "/user";
@@ -48,10 +47,6 @@ const AppointmentDetails = () => {
 	};
 	const handleChange = ({ currentTarget: input }) => {
 		setData({ ...data, [input.name]: input.value });
-	};
-	const getDate = (d) => {
-		const date = new Date(d);
-		return date.toLocaleDateString("pl-PL");
 	};
 	const getTime = (d) => {
 		const date = new Date(d);
@@ -74,7 +69,9 @@ const AppointmentDetails = () => {
 		);
 		if (response.status === 200) {
 			const res = await response.json();
-			setCalendar(getDate(res.date));
+			var dat = res.date;
+			var d = new Date(dat);
+			setCalendar(d.toISOString().split("T")[0]);
 			setTime(getTime(res.date));
 			const petAgeMatch = res.details.match(/Pet age: (\d+),/);
 			const reasonMatch = res.details.match(/Reason: (.+)\./);

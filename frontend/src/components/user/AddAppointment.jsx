@@ -18,7 +18,7 @@ const AddAppointment = () => {
 		const sendData = {
 			...data,
 			details: newDetail + details,
-			date: dateTimeString + ":00",
+			date: new Date(dateTimeString),
 		};
 		try {
 			const response = await fetch(
@@ -48,7 +48,7 @@ const AddAppointment = () => {
 	return (
 		<div className="bg-white dark:bg-gray-900">
 			<UserNavbar />
-			<div className="py-32 px-4 mx-auto max-w-2xl lg:py-16">
+			<div className="py-32 px-4 mx-auto max-w-2xl lg:py-16 mt-8">
 				<h2 className="mb-4 text-xl font-bold text-gray-900 dark:text-white">
 					Add Appointment
 				</h2>

@@ -38,7 +38,8 @@ public class UserRestController {
     }
 
     @GetMapping("/appointments")
-    public ResponseEntity<List<AppointmentEntity>> getUserAppointments(@RequestHeader("Authorization") String headerToken, @RequestParam(required = false) String status) {
+    public ResponseEntity<List<AppointmentEntity>> getUserAppointments(@RequestHeader("Authorization") String headerToken,
+                                                                       @RequestParam(required = false) String status) {
         UserEntity user = authService.retrieveUser(headerToken);
         AppointmentStatusEnum appointmentStatus;
         if (status != null) {
@@ -61,7 +62,8 @@ public class UserRestController {
     }
 
     @PostMapping("/appointments")
-    public ResponseEntity<AppointmentEntity> createAppointment(@RequestHeader("Authorization") String headerToken, @Valid @RequestBody AppointmentEntity appointment) {
+    public ResponseEntity<AppointmentEntity> createAppointment(@RequestHeader("Authorization") String headerToken,
+                                                               @Valid @RequestBody AppointmentEntity appointment) {
         UserEntity user = authService.retrieveUser(headerToken);
         appointment.setAppointmentUser(user);
         boolean createStatus = appointmentService.save(appointment);
