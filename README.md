@@ -18,44 +18,45 @@ The project was created to automate the process of making and managing appointme
 
 Clone the project
 
-bash
+```bash
   git clone https://github.com/nataliaprazmo/java_project.git
+```
 
 
 
 Go to the project frontend directory
 
-bash
+```bash
   cd frontend
-
+```
 
 
 Install dependencies
 
-bash
+```bash
   npm install
-
+```
 
 
 Start client
 
-bash
+```bash
   npm run dev
-
+```
 
 
 Go back to the project directory
 
-bash
+```bash
   cd ..
-
+```
 
 
 Start the server in Intellij Idea or start from console
 
-bash
+```bash
   mvn spring-boot:run
-
+```
 
 
 
