@@ -1,28 +1,10 @@
 import React from "react";
 
-const DeleteAppointment = ({ id, setOpen, setError }) => {
-	const handleDelete = async () => {
-		setOpen(false);
-		const token = localStorage.getItem("token");
-		const response = await fetch(
-			"http://localhost:8080/api/user/appointments/" + id,
-			{
-				method: "DELETE",
-				headers: {
-					"Content-Type": "application/json",
-					Authorization: "Bearer " + token,
-				},
-			}
-		);
-		if (response.status === 200) {
-			setError(null);
-			window.location = "/user";
-		} else setError("Something went wrong");
-	};
+const DeleteAppointment = ({ id, setOpen, setError, handleDelete }) => {
 	return (
 		<div
 			id="popup-modal"
-			tabindex="-1"
+			tabIndex="-1"
 			className="overflow-y-auto fixed overflow-x-hidden z-50 flex justify-center items-center w-full md:inset-0 h-full"
 		>
 			<div className="relative bg-white rounded-lg dark:bg-gray-600 border-2 border-gray-800 shadow-2xl">
@@ -43,9 +25,9 @@ const DeleteAppointment = ({ id, setOpen, setError }) => {
 					>
 						<path
 							stroke="currentColor"
-							stroke-linecap="round"
-							stroke-linejoin="round"
-							stroke-width="2"
+							strokeLinecap="round"
+							strokeLinejoin="round"
+							strokeWidth="2"
 							d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"
 						/>
 					</svg>
@@ -61,9 +43,9 @@ const DeleteAppointment = ({ id, setOpen, setError }) => {
 					>
 						<path
 							stroke="currentColor"
-							stroke-linecap="round"
-							stroke-linejoin="round"
-							stroke-width="2"
+							strokeLinecap="round"
+							strokeLinejoin="round"
+							strokeWidth="2"
 							d="M10 11V6m0 8h.01M19 10a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
 						/>
 					</svg>

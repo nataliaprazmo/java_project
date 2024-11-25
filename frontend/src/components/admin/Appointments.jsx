@@ -1,8 +1,12 @@
+"use client";
+
 import React, { useState } from "react";
+import { useRouter } from 'next/navigation';
 import Footer from "../Footer";
 import AdminNavbar from "./AdminNavbar";
 
 const Appointments = () => {
+	const router = useRouter();
 	const [appointments, setAppointments] = useState(null);
 	const ActiveStatus = () => {
 		return (
@@ -24,9 +28,9 @@ const Appointments = () => {
 		let toFormatDate = new Date(date);
 		return formatDate.format(toFormatDate);
 	};
-	const token = localStorage.getItem("token");
 	const [error, setError] = useState(null);
 	const updateStatus = async (id) => {
+		const token = localStorage.getItem("token");
 		const response = await fetch(
 			"http://localhost:8080/api/admin/appointment/" +
 				id +
@@ -41,12 +45,13 @@ const Appointments = () => {
 		);
 		if (response.status === 200) {
 			setError(null);
-			window.location = "/admin/appointments";
+			router.push("/admin");
 		} else if (response.status === 409) {
 			setError("Appointment status cannot be updated");
 		}
 	};
 	const getAppointments = async () => {
+		const token = localStorage.getItem("token");
 		const response = await fetch(
 			"http://localhost:8080/api/admin/appointments",
 			{

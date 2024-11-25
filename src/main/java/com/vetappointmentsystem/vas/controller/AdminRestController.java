@@ -5,12 +5,12 @@ import com.vetappointmentsystem.vas.domain.UserEntity;
 import com.vetappointmentsystem.vas.domain.UserRoleEnum;
 import com.vetappointmentsystem.vas.service.appointment.AppointmentService;
 import com.vetappointmentsystem.vas.service.user.UserService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.Valid;
 import java.util.List;
 
 @RestController

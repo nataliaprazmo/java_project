@@ -1,14 +1,14 @@
 package com.vetappointmentsystem.vas.domain;
-
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Pattern;
+import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.validation.constraints.Email;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 import java.util.List;
 
 @Entity
@@ -36,12 +36,12 @@ public class UserEntity {
     private String email;
 
     @NotNull(message = "Password cannot be null")
-    @Size(min = 8, max = 20, message = "Password should be between 8 and 20 characters")
+    @Size(min = 6, message = "Password should have at least 6 characters")
     private String password;
 
     @Column(unique = true)
     @NotNull(message = "Phone cannot be null")
-    @Size(min = 9, max = 12, message = "Phone should not be more than 15 characters")
+    @Pattern(regexp = "^[0-9]{9,12}$", message = "Phone number must be between 9 and 12 digits")
     private String phone;
 
     @Enumerated(EnumType.STRING)

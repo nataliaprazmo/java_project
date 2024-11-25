@@ -1,3 +1,5 @@
+"use client";
+
 import React, { useState } from "react";
 import UsersTable from "./UsersTable";
 import AdminNavbar from "./AdminNavbar";
@@ -6,8 +8,8 @@ import Filter from "./Filter";
 
 const AdminPage = () => {
 	const [users, setUsers] = useState(null);
-	const token = localStorage.getItem("token");
 	const getUsers = async () => {
+		const token = localStorage.getItem("token");
 		const response = await fetch(
 			"http://localhost:8080/api/admin/allUsers",
 			{
@@ -23,9 +25,10 @@ const AdminPage = () => {
 			setUsers(res);
 		}
 	};
-	const getUsersByRole = async (role) => {
+	const getUsersByRole = async (userRole) => {
+		const token = localStorage.getItem("token");
 		const response = await fetch(
-			`http://localhost:8080/api/admin/${role}`,
+			`http://localhost:8080/api/admin/${userRole}`,
 			{
 				method: "GET",
 				headers: {

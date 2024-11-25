@@ -1,7 +1,11 @@
+"use client";
+
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { useRouter } from 'next/navigation';
+import Link from "next/link";
 
 const Login = () => {
+	const router = useRouter();
 	const [data, setData] = useState({ email: "", password: "" });
 	const [error, setError] = useState("");
 	const handleChange = ({ currentTarget: input }) => {
@@ -25,9 +29,12 @@ const Login = () => {
 				setError(null);
 				localStorage.setItem("token", res.token);
 				localStorage.setItem("role", res.role);
+				document.cookie = `token=${res.token}; path=/; Secure; SameSite=None`;
+				document.cookie = `role=${res.role}; path=/; Secure; SameSite=None`;
 				const role = res.role.toLowerCase();
-				window.location = `/${role}`;
+				router.push(`/${role}`);
 			} else {
+				console.log(response);
 				setError("Given wrong data");
 			}
 		} catch (error) {
@@ -99,7 +106,7 @@ const Login = () => {
 						<p className="text-center text-sm font-light text-gray-500 dark:text-gray-400">
 							Don't have an account yet?{" "}
 							<Link
-								to="/signup"
+								href="/signup"
 								className="font-medium text-primary-600 hover:underline dark:text-primary-500"
 							>
 								Signup

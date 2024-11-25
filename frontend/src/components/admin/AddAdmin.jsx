@@ -1,8 +1,12 @@
+"use client";
+
 import React, { useState } from "react";
+import { useRouter } from 'next/navigation';
 import AdminNavbar from "./AdminNavbar";
 import Footer from "../Footer";
 
 const AddAdmin = () => {
+	const router = useRouter();
 	const [data, setData] = useState({
 		firstName: "",
 		lastName: "",
@@ -31,7 +35,7 @@ const AddAdmin = () => {
 			);
 			if (response.status === 201) {
 				setError(null);
-				window.location = "/admin";
+				router.push("/admin");
 			} else if (response.status === 409) {
 				setError(
 					"Account with given email or phone number already exists"

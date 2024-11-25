@@ -1,7 +1,7 @@
 package com.vetappointmentsystem.vas.configuration;
 
-import com.vetappointmentsystem.vas.service.jwt.JwtService;
 import com.vetappointmentsystem.vas.service.userAuthDetails.UserAuthDetailsService;
+import com.vetappointmentsystem.vas.service.jwt.JwtService;
 import io.micrometer.common.util.StringUtils;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;

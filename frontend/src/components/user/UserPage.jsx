@@ -1,3 +1,5 @@
+"use client";
+
 import React, { useState } from "react";
 import UserNavbar from "./UserNavbar";
 import Footer from "../Footer";
@@ -6,8 +8,8 @@ import Appointments from "./Appointments";
 
 const UserPage = () => {
 	const [appointments, setAppointments] = useState(null);
-	const token = localStorage.getItem("token");
 	const getUserAppointments = async () => {
+		const token = localStorage.getItem("token");
 		const response = await fetch(
 			"http://localhost:8080/api/user/appointments",
 			{
@@ -24,6 +26,7 @@ const UserPage = () => {
 		}
 	};
 	const getAppointmentsByStatus = async (status) => {
+		const token = localStorage.getItem("token");
 		const response = await fetch(
 			`http://localhost:8080/api/user/appointments?status=${status}`,
 			{

@@ -1,17 +1,21 @@
+"use client";
+
 import React, { useState } from "react";
+import { useRouter } from "next/navigation";
 import DeleteAdmin from "./DeleteAdmin";
 
 const UsersTable = ({ users }) => {
+	const router = useRouter();
 	const AdminBadge = ({ children }) => {
 		return (
-			<span class="bg-green-100 text-green-800 text-xs font-semibold me-2 px-2.5 py-0.5 rounded dark:bg-green-900 dark:text-green-300">
+			<span className="bg-green-100 text-green-800 text-xs font-semibold me-2 px-2.5 py-0.5 rounded dark:bg-green-900 dark:text-green-300">
 				{children}
 			</span>
 		);
 	};
 	const UserBadge = ({ children }) => {
 		return (
-			<span class="bg-purple-100 text-purple-800 text-xs font-semibold me-2 px-2.5 py-0.5 rounded dark:bg-purple-900 dark:text-purple-300">
+			<span className="bg-purple-100 text-purple-800 text-xs font-semibold me-2 px-2.5 py-0.5 rounded dark:bg-purple-900 dark:text-purple-300">
 				{children}
 			</span>
 		);
@@ -19,6 +23,59 @@ const UsersTable = ({ users }) => {
 	const [error, setError] = useState(null);
 	const [open, setOpen] = useState(false);
 	const [userId, setUserId] = useState(null);
+
+	const handleLogout = () => {
+		localStorage.removeItem("token");
+		localStorage.removeItem("role");
+		document.cookie =
+			"token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+		document.cookie =
+			"role=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+		router.push("/login");
+	};
+	const findCurrentUserId = async() =>{
+		let currentUser = null;
+		const token = localStorage.getItem("token");
+		const response = await fetch("http://localhost:8080/api/user/details", {
+			method: "GET",
+			headers: {
+				"Content-Type": "application/json",
+				Authorization: "Bearer " + token,
+			},
+		});
+		if (response.status === 200) {
+			const res = await response.json();
+			currentUser = res.id;
+		}
+		return currentUser;
+	}
+	const handleDeleteAdmin = async () => {
+		setOpen(false);
+		const currentUserId = await findCurrentUserId();
+		const token = localStorage.getItem("token");
+		const response = await fetch(
+			"http://localhost:8080/api/admin/admins/delete/" + userId,
+			{
+				method: "DELETE",
+				headers: {
+					"Content-Type": "application/json",
+					Authorization: "Bearer " + token,
+				},
+			}
+		);
+		console.log(response);
+		if (response.status === 200) {
+			if(currentUserId === userId){
+				handleLogout();
+			}
+			setUserId(null);
+			setError(null);
+			router.push("/admin");
+		} else {
+			setError("Something went wrong");
+			setId(null);
+		}
+	};
 	return (
 		<div className="overflow-x-auto mt-3 mb-32">
 			{users && users.length !== 0 ? (
@@ -75,7 +132,7 @@ const UsersTable = ({ users }) => {
 													setUserId(user.id);
 													setOpen(true);
 												}}
-												class="focus:outline-none text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900"
+												className="focus:outline-none text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900"
 											>
 												Delete
 											</button>
@@ -89,10 +146,8 @@ const UsersTable = ({ users }) => {
 					</table>
 					{open && userId && (
 						<DeleteAdmin
-							id={userId}
-							setId={setUserId}
 							setOpen={setOpen}
-							setError={setError}
+							handleDelete={handleDeleteAdmin}
 						/>
 					)}
 					{error && (

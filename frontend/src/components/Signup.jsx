@@ -1,15 +1,20 @@
+"use client";
+
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { useRouter } from "next/navigation";
+import Link from "next/link";
 
 const Signup = () => {
+	const router = useRouter();
 	const [data, setData] = useState({
 		firstName: "",
 		lastName: "",
 		email: "",
 		password: "",
 		phone: "",
+		role: "USER"
 	});
-	const [error, setError] = useState("");
+	const [error, setError] = useState({});
 	const handleChange = ({ currentTarget: input }) => {
 		setData({ ...data, [input.name]: input.value });
 	};
@@ -27,19 +32,21 @@ const Signup = () => {
 				}
 			);
 			if (response.status === 201) {
-				setError(null);
-				window.location = "/login";
+				console.log('ok');
+				setError({});
+				router.push("/login");
+			} else if (response.status === 400) {
+				const errorResponse = await response.json();
+				setError(errorResponse);
+				console.log('400');
 			} else if (response.status === 409) {
-				setError(
-					"Account with given email or phone number already exists"
-				);
+				setError({ general: "Account with given email or phone number already exists" });
 			} else {
-				console.log(response.status);
-				setError("Given wrong data");
+				setError({ general: "Something went wrong. Please try again." });
 			}
 		} catch (error) {
 			console.log(error);
-			setError("Something went wrong");
+			setError({ general: "Unable to connect to the server. Please try again later." });
 		}
 	};
 	return (
@@ -71,6 +78,7 @@ const Signup = () => {
 									className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
 									required
 								/>
+								{error.firstName && <p className="error">{error.firstName}</p>}
 							</div>
 							<div>
 								<label
@@ -107,6 +115,7 @@ const Signup = () => {
 									placeholder="name@company.com"
 									required
 								/>
+								{error.email && <p className="error">{error.email}</p>}
 							</div>
 							<div>
 								<label
@@ -125,6 +134,7 @@ const Signup = () => {
 									className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
 									required
 								/>
+								{error.password && <p className="error">{error.password}</p>}
 							</div>
 							<div>
 								<label
@@ -143,6 +153,7 @@ const Signup = () => {
 									placeholder="123 456 789"
 									required
 								/>
+								{error.phone && <p className="error">{error.phone}</p>}
 							</div>
 							<div className="flex items-start">
 								<div className="flex items-center h-5">
@@ -163,12 +174,12 @@ const Signup = () => {
 									</label>
 								</div>
 							</div>
-							{error && (
+							{error.general && (
 								<div
 									className="font-semibold p-4 mb-4 text-sm text-red-800 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400"
 									role="alert"
 								>
-									{error}
+									{error.general}
 								</div>
 							)}
 							<button
@@ -180,7 +191,7 @@ const Signup = () => {
 							<p className="text-center text-sm font-light text-gray-500 dark:text-gray-400">
 								Already have an account?{" "}
 								<Link
-									to="/login"
+									href="/login"
 									className="font-medium text-primary-600 hover:underline dark:text-primary-500"
 								>
 									Login here

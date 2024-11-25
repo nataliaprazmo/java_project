@@ -21,8 +21,8 @@ import org.springframework.test.web.servlet.MvcResult;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.Matchers.greaterThanOrEqualTo;
 import static org.hamcrest.Matchers.hasSize;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -71,7 +71,7 @@ public class AdminRestControllerIntegrationTests {
     }
 
     @BeforeEach
-    private void deleteUsers() {
+    public void deleteUsers() {
         userRepository.deleteAll();
         userService.saveAdmin(new UserEntity("Admin", "Adminski", "admin@admin.com", "P@ssw0rd", "000000000"));
     }

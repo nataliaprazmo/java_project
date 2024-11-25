@@ -2,6 +2,7 @@ package com.vetappointmentsystem.vas;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.vetappointmentsystem.vas.domain.UserEntity;
+import com.vetappointmentsystem.vas.domain.UserRoleEnum;
 import com.vetappointmentsystem.vas.repository.UserRepository;
 import com.vetappointmentsystem.vas.service.user.UserService;
 import org.junit.jupiter.api.BeforeEach;
@@ -41,7 +42,7 @@ public class AuthRestControllerIntegrationTests {
     @Test
     public void whenValidInput_thenCreateUser() throws Exception {
         ObjectMapper objectMapper = new ObjectMapper();
-        UserEntity user = new UserEntity("Jan", "Kowalski", "kowalski@mail.com", "P@ssw0rd", "123456789");
+        UserEntity user = new UserEntity("Jan", "Kowalski", "kowalski@mail.com", "P@ssw0rd", "123456789", UserRoleEnum.USER);
         mvc.perform(post("/api/auth/signup")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(user))).andDo(print());
@@ -52,7 +53,7 @@ public class AuthRestControllerIntegrationTests {
     }
 
     @BeforeEach
-    private void deleteUsers() {
+    public void deleteUsers() {
         userRepository.deleteAll();
         userService.saveAdmin(new UserEntity("Admin", "Adminski", "admin@admin.com", "P@ssw0rd", "000000000"));
     }

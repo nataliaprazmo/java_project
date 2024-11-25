@@ -1,8 +1,12 @@
+"use client";
+
 import React, { useState } from "react";
+import { useRouter } from 'next/navigation';
 import UserNavbar from "./UserNavbar";
 import Footer from "../Footer";
 
 const AddAppointment = () => {
+	const router = useRouter();
 	const [data, setData] = useState({ petName: "", details: "", date: "" });
 	const [calendar, setCalendar] = useState("");
 	const [time, setTime] = useState("");
@@ -34,7 +38,7 @@ const AddAppointment = () => {
 			);
 			if (response.status === 201) {
 				setError(null);
-				window.location = "/user";
+				router.push("/user");
 			} else if (response.status === 409) {
 				setError("Appointment can't be set on this date");
 			}
